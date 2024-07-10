@@ -1,10 +1,22 @@
-DROP TABLE IF EXISTS "User";
+DROP TABLE IF EXISTS Users;
 
-CREATE TABLE "User" (
-	username text,
-	password text
+CREATE TABLE Users (
+    userId INTEGER PRIMARY KEY,
+	username TEXT,
+	password TEXT
 );
 
-INSERT INTO "User" VALUES ('admin', 1234);
-INSERT INTO "User" VALUES ('admin2', 5678);
+INSERT INTO Users (username, password) VALUES
+('admin', 1234),
+('admin2', 5678);
+
+DROP TABLE IF EXISTS Accounts;
+
+CREATE TABLE Accounts (
+    accountId INTEGER PRIMARY KEY,
+    type TEXT,
+    balance DOUBLE(16, 2),
+    userId INTEGER,
+    FOREIGN KEY(userId) REFERENCES Users(userId)
+);
 

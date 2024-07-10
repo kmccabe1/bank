@@ -1,5 +1,6 @@
 package com.revature;
 
+import com.revature.controller.AccountController;
 import com.revature.controller.UserController;
 import com.revature.repository.SqliteUserDao;
 import com.revature.repository.UserDao;
@@ -16,13 +17,15 @@ public class Main {
             UserDao userDao = new SqliteUserDao();
             UserService userService = new UserService(userDao);
             UserController userController = new UserController(scanner, userService);
+            AccountController accountController = new AccountController(scanner);
             Map<String, String> map = new HashMap<>();
             map.put("Continue Loop", "true");
             while (Boolean.parseBoolean(map.get("Continue Loop"))) {
                 userController.promptUser(map);
+                // Check if user is logged in
                 if (map.containsKey("User")) {
-                    System.out.println("Banking stuff for user can happen here!");
-                    String input = scanner.nextLine();
+                    accountController.promptUser(userDao.getUser(map.get("User")));
+
                 }
             }
         }

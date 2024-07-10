@@ -7,7 +7,7 @@ import com.revature.repository.UserDao;
 import java.util.List;
 
 public class UserService {
-    private UserDao userDao;
+    private final UserDao userDao;
 
     public UserService(UserDao userDao) {
         this.userDao = userDao;
@@ -27,15 +27,13 @@ public class UserService {
     }
 
     private boolean checkUnique(User user) {
-        boolean unique = true;
         List<User> users = userDao.getUsers();
         for (User u : users) {
             if (user.getUsername().equals(u.getUsername())) {
-                unique = false;
-                break;
+                return false;
             }
         }
-        return unique;
+        return true;
     }
 
     public User checkLogin(User user) {

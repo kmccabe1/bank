@@ -40,7 +40,7 @@ public class UserController {
 
     public User registerNewUser() {
         User user = userService.validateUser(getUserCredentials());
-        System.out.printf("New account created: %s", user);
+        System.out.printf("New account created: %s\n", user);
         return user;
     }
 
