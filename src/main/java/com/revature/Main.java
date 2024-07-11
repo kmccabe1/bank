@@ -24,11 +24,9 @@ public class Main {
             Map<String, String> map = new HashMap<>();
             map.put("Continue Loop", "true");
             while (Boolean.parseBoolean(map.get("Continue Loop"))) {
-                //userController.promptUser(map);
                 // Check if user is logged in
                 if (map.containsKey("User")) {
                     accountController.promptUser(userDao.getUser(map.get("User")), map);
-
                 } else {
                     userController.promptUser(map);
                 }

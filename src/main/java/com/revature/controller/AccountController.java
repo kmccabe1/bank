@@ -22,7 +22,8 @@ public class AccountController {
         System.out.println("1. Register a bank account");
         System.out.println("2. Get Cash");
         System.out.println("3. Deposit");
-        System.out.println("4. Close a bank account");
+        System.out.println("4. View Account");
+        System.out.println("5. Close a bank account");
         System.out.println("q. Logout");
         try {
             String action = scanner.nextLine();
@@ -35,26 +36,34 @@ public class AccountController {
                 }
                 case "2" -> {
                     // Withdraw from a bank account
-                    System.out.println("Please enter your account ID: ");
-                    int accountId = scanner.nextInt();
-                    System.out.println("Please enter the amount you would like to withdraw: ");
-                    double amount = scanner.nextDouble();
+                    System.out.print("Please enter your account ID: ");
+                    int accountId = Integer.parseInt(scanner.nextLine());
+                    System.out.print("Please enter the amount you would like to withdraw: ");
+                    double amount = Double.parseDouble(scanner.nextLine());
                     double balance = withdraw(accountDao.getAccount(accountId, user), accountId, amount);
                     System.out.println("Available balance: " + balance);
                 }
                 case "3" -> {
                     // Deposit to a bank account
-                    System.out.println("Please enter your account ID: ");
-                    int accountId = scanner.nextInt();
-                    System.out.println("Please enter the amount you would like to deposit: ");
-                    double amount = scanner.nextDouble();
+                    System.out.print("Please enter your account ID: ");
+                    int accountId = Integer.parseInt(scanner.nextLine());
+                    System.out.print("Please enter the amount you would like to deposit: ");
+                    double amount = Double.parseDouble(scanner.nextLine());
                     double balance = deposit(accountDao.getAccount(accountId, user),accountId, amount);
                     System.out.println("Available balance: " + balance);
                 }
                 case "4" -> {
+                    System.out.print("Please enter your account ID: ");
+                    int accountId = Integer.parseInt(scanner.nextLine());
+                    Account bankAccount = accountDao.getAccount(accountId, user);
+                    System.out.println("Owner: " + bankAccount.getOwner().getUsername());
+                    System.out.println("Account Type: " + bankAccount.getType());
+                    System.out.println("Available Balance: " + bankAccount.getBalance());
+                }
+                case "5" -> {
                     // Close bank account
-                    System.out.println("Please enter your account ID: ");
-                    int accountId = scanner.nextInt();
+                    System.out.print("Please enter your account ID: ");
+                    int accountId = Integer.parseInt(scanner.nextLine());
                     accountDao.deleteAccount(accountId);
                     System.out.println("Your account has been closed");
                 }
@@ -72,7 +81,7 @@ public class AccountController {
         System.out.print("Please enter an account type (checking, savings): ");
         String type = scanner.nextLine();
         System.out.print("Please enter the amount you would like to deposit: ");
-        double balance = scanner.nextDouble();
+        double balance = Double.parseDouble(scanner.nextLine());
         Account account = new Account(type, balance, user);
         return accountDao.createAccount(account);
     }
