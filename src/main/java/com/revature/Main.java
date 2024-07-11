@@ -14,7 +14,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // Register a new User
         try (Scanner scanner = new Scanner(System.in)) {
             UserDao userDao = new SqliteUserDao();
             AccountDao accountDao = new SqliteAccountDao();
@@ -26,8 +25,10 @@ public class Main {
             while (Boolean.parseBoolean(map.get("Continue Loop"))) {
                 // Check if user is logged in
                 if (map.containsKey("User")) {
+                    // User is logged in. Prompt user for banking action
                     accountController.promptUser(userDao.getUser(map.get("User")), map);
                 } else {
+                    // User is not logged in. Prompt user for action
                     userController.promptUser(map);
                 }
             }

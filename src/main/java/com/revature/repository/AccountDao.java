@@ -8,8 +8,9 @@ public interface AccountDao {
 
     Account getAccount(int accountId, User user);
 
-    double updateAccountBalance(int accountId, double amount);
+    void updateAccountBalance(int accountId, double amount);
 
     void deleteAccount(int accountId);
 
+    boolean validateOwner(int accountId, String username);
 }

@@ -39,8 +39,4 @@ public class Account {
         }
         return Double.parseDouble(df.format(balance));
     }
-
-    public void close() {
-        // Remove account from database
-    }
 }

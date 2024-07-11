@@ -3,6 +3,7 @@ package com.revature.repository;
 import com.revature.entity.Account;
 import com.revature.entity.User;
 import com.revature.exception.AccountSQLException;
+import com.revature.exception.UserSQLException;
 import com.revature.utility.DatabaseConnector;
 
 import java.sql.Connection;
@@ -50,14 +51,13 @@ public class SqliteAccountDao implements AccountDao {
     }
 
     @Override
-    public double updateAccountBalance(int accountId, double balance) {
+    public void updateAccountBalance(int accountId, double balance) {
         String sql = "UPDATE Accounts SET balance = ? WHERE accountId = ?";
         try (Connection connection = DatabaseConnector.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, Double.toString(balance));
             preparedStatement.setString(2, Integer.toString(accountId));
             preparedStatement.executeUpdate();
-            return balance;
         } catch (SQLException e) {
             throw new AccountSQLException(e.getMessage());
         }
@@ -72,6 +72,34 @@ public class SqliteAccountDao implements AccountDao {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new AccountSQLException(e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean validateOwner(int accountId, String username) {
+        // Check if account belongs to user
+        int userId = getUserId(username);
+        String sql = "SELECT userId FROM Accounts WHERE accountId = ?";
+        try (Connection connection = DatabaseConnector.createConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, Integer.toString(accountId));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return userId == resultSet.getInt("userId");
+        } catch (SQLException e) {
+            throw new AccountSQLException(e.getMessage());
+        }
+    }
+
+    private int getUserId(String username) {
+        // Retrieve userId from DB for account owner
+        String sql = "SELECT userId FROM Users WHERE username = ?";
+        try (Connection connection = DatabaseConnector.createConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.getInt("userId");
+        } catch (SQLException e) {
+            throw new UserSQLException(e.getMessage());
         }
     }
 }

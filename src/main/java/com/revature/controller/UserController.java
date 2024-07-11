@@ -38,10 +38,9 @@ public class UserController {
         }
     }
 
-    public User registerNewUser() {
+    public void registerNewUser() {
         User user = userService.validateUser(getUserCredentials());
         System.out.printf("New account created: %s\n", user);
-        return user;
     }
 
     public User login() {

@@ -53,6 +53,7 @@ public class AccountController {
                     System.out.println("Available balance: " + balance);
                 }
                 case "4" -> {
+                    // View bank account details
                     System.out.print("Please enter your account ID: ");
                     int accountId = Integer.parseInt(scanner.nextLine());
                     Account bankAccount = accountDao.getAccount(accountId, user);
@@ -64,10 +65,15 @@ public class AccountController {
                     // Close bank account
                     System.out.print("Please enter your account ID: ");
                     int accountId = Integer.parseInt(scanner.nextLine());
-                    accountDao.deleteAccount(accountId);
-                    System.out.println("Your account has been closed");
+                    if (validateOwner(accountId, user.getUsername())) {
+                        accountDao.deleteAccount(accountId);
+                        System.out.println("Your account has been closed");
+                    } else {
+                        System.out.println("You are not the owner of this account");
+                    }
                 }
                 case "q" -> {
+                    // Logout user by removing user from map
                     map.remove("User");
                     System.out.println("Logging out...");
                 }
@@ -78,6 +84,7 @@ public class AccountController {
     }
 
     public Account registerNewAccount(User user) {
+        // Create a new bank account and insert into DB
         System.out.print("Please enter an account type (checking, savings): ");
         String type = scanner.nextLine();
         System.out.print("Please enter the amount you would like to deposit: ");
@@ -98,5 +105,10 @@ public class AccountController {
         double balance = bankAccount.deposit(amount);
         accountDao.updateAccountBalance(accountId, balance);
         return balance;
+    }
+
+    public boolean validateOwner(int accountId, String username) {
+        // Query DB to confirm bank account is owned by user
+        return accountDao.validateOwner(accountId, username);
     }
 }
