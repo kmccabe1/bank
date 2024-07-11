@@ -10,4 +10,6 @@ public interface AccountDao {
 
     double updateAccountBalance(int accountId, double amount);
 
+    void deleteAccount(int accountId);
+
 }

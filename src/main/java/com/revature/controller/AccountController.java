@@ -5,6 +5,7 @@ import com.revature.entity.User;
 import com.revature.exception.LoginFail;
 import com.revature.repository.AccountDao;
 
+import java.util.Map;
 import java.util.Scanner;
 
 public class AccountController {
@@ -16,21 +17,24 @@ public class AccountController {
         this.accountDao = accountDao;
     }
 
-    public void promptUser(User user) {
+    public void promptUser(User user, Map<String, String> map) {
         System.out.println("What would you like to do?");
         System.out.println("1. Register a bank account");
         System.out.println("2. Get Cash");
         System.out.println("3. Deposit");
+        System.out.println("4. Close a bank account");
         System.out.println("q. Logout");
         try {
             String action = scanner.nextLine();
             switch (action) {
                 case "1" -> {
+                    // Register a new bank account
                     Account account = registerNewAccount(user);
                     System.out.println("Your " + account.getType() + " account has been created");
                     System.out.println("Available balance: " + account.getBalance());
                 }
                 case "2" -> {
+                    // Withdraw from a bank account
                     System.out.println("Please enter your account ID: ");
                     int accountId = scanner.nextInt();
                     System.out.println("Please enter the amount you would like to withdraw: ");
@@ -39,6 +43,7 @@ public class AccountController {
                     System.out.println("Available balance: " + balance);
                 }
                 case "3" -> {
+                    // Deposit to a bank account
                     System.out.println("Please enter your account ID: ");
                     int accountId = scanner.nextInt();
                     System.out.println("Please enter the amount you would like to deposit: ");
@@ -46,8 +51,16 @@ public class AccountController {
                     double balance = deposit(accountDao.getAccount(accountId, user),accountId, amount);
                     System.out.println("Available balance: " + balance);
                 }
+                case "4" -> {
+                    // Close bank account
+                    System.out.println("Please enter your account ID: ");
+                    int accountId = scanner.nextInt();
+                    accountDao.deleteAccount(accountId);
+                    System.out.println("Your account has been closed");
+                }
                 case "q" -> {
-                    System.out.println("Goodbye!");
+                    map.remove("User");
+                    System.out.println("Logging out...");
                 }
             }
         } catch (LoginFail e) {

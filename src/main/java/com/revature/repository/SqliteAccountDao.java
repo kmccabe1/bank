@@ -62,4 +62,16 @@ public class SqliteAccountDao implements AccountDao {
             throw new AccountSQLException(e.getMessage());
         }
     }
+
+    @Override
+    public void deleteAccount(int accountId) {
+        String sql = "DELETE FROM Accounts WHERE accountId = ?";
+        try (Connection connection = DatabaseConnector.createConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, Integer.toString(accountId));
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new AccountSQLException(e.getMessage());
+        }
+    }
 }
