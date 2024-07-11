@@ -28,7 +28,17 @@ public class SqliteUserDao implements UserDao {
 
     @Override
     public User getUser(String username) {
-        return null;
+        String sql = "SELECT password FROM Users WHERE username = ?";
+        try (Connection connection = DatabaseConnector.createConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            //System.out.println(resultSet);
+            return new User(username, resultSet.getString("password"));
+
+        } catch (SQLException e) {
+            throw new UserSQLException(e.getMessage());
+        }
     }
 
     @Override

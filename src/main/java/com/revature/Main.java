@@ -2,6 +2,8 @@ package com.revature;
 
 import com.revature.controller.AccountController;
 import com.revature.controller.UserController;
+import com.revature.repository.AccountDao;
+import com.revature.repository.SqliteAccountDao;
 import com.revature.repository.SqliteUserDao;
 import com.revature.repository.UserDao;
 import com.revature.service.UserService;
@@ -15,9 +17,10 @@ public class Main {
         // Register a new User
         try (Scanner scanner = new Scanner(System.in)) {
             UserDao userDao = new SqliteUserDao();
+            AccountDao accountDao = new SqliteAccountDao();
             UserService userService = new UserService(userDao);
             UserController userController = new UserController(scanner, userService);
-            AccountController accountController = new AccountController(scanner);
+            AccountController accountController = new AccountController(scanner, accountDao);
             Map<String, String> map = new HashMap<>();
             map.put("Continue Loop", "true");
             while (Boolean.parseBoolean(map.get("Continue Loop"))) {

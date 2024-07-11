@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS Accounts;
 
 CREATE TABLE Accounts (
     accountId INTEGER PRIMARY KEY,
-    type TEXT,
+    accountType TEXT,
     balance DOUBLE(16, 2),
     userId INTEGER,
     FOREIGN KEY(userId) REFERENCES Users(userId)

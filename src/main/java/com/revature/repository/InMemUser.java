@@ -22,4 +22,9 @@ public class InMemUser implements UserDao {
         users.add(user);
         return user;
     }
+
+    @Override
+    public User getUser(String username) {
+        return null;
+    }
 }
