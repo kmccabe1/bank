@@ -33,7 +33,6 @@ public class SqliteUserDao implements UserDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
-            //System.out.println(resultSet);
             return new User(username, resultSet.getString("password"));
 
         } catch (SQLException e) {

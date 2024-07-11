@@ -31,10 +31,20 @@ public class AccountController {
                     System.out.println("Available balance: " + account.getBalance());
                 }
                 case "2" -> {
-                    //withdraw();
+                    System.out.println("Please enter your account ID: ");
+                    int accountId = scanner.nextInt();
+                    System.out.println("Please enter the amount you would like to withdraw: ");
+                    double amount = scanner.nextDouble();
+                    double balance = withdraw(accountDao.getAccount(accountId, user), accountId, amount);
+                    System.out.println("Available balance: " + balance);
                 }
                 case "3" -> {
-
+                    System.out.println("Please enter your account ID: ");
+                    int accountId = scanner.nextInt();
+                    System.out.println("Please enter the amount you would like to deposit: ");
+                    double amount = scanner.nextDouble();
+                    double balance = deposit(accountDao.getAccount(accountId, user),accountId, amount);
+                    System.out.println("Available balance: " + balance);
                 }
                 case "q" -> {
                     System.out.println("Goodbye!");
@@ -54,11 +64,17 @@ public class AccountController {
         return accountDao.createAccount(account);
     }
 
-    public double withdraw(Account bankAccount) {
-        System.out.println("Please enter your account ID: ");
-        int accountId = scanner.nextInt();
-        System.out.println("Please enter the amount you would like to withdraw: ");
-        double amount = scanner.nextDouble();
-        return bankAccount.withdraw(amount);
+    public double withdraw(Account bankAccount, int accountId, double amount) {
+        // Withdraw amount from bankAccount and update DB
+        double balance = bankAccount.withdraw(amount);
+        accountDao.updateAccountBalance(accountId, balance);
+        return balance;
+    }
+
+    public double deposit(Account bankAccount, int accountId, double amount) {
+        // Deposit amount to bankAccount and update DB
+        double balance = bankAccount.deposit(amount);
+        accountDao.updateAccountBalance(accountId, balance);
+        return balance;
     }
 }
