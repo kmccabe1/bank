@@ -1,6 +1,7 @@
 package com.revature.controller;
 
 import com.revature.exception.LoginFail;
+import com.revature.exception.UserValidationFail;
 import com.revature.service.UserService;
 import com.revature.entity.User;
 
@@ -24,7 +25,14 @@ public class UserController {
         try {
             String action = scanner.nextLine();
             switch (action) {
-                case "1" -> registerNewUser();
+                case "1" -> {
+                    try {
+                        registerNewUser();
+                    } catch (UserValidationFail e) {
+                        System.out.println("Invalid username or password provided");
+                        System.out.println("Username and password must not be longer than 30 characters");
+                    }
+                }
                 case "2" -> {
                     map.put("User", login().getUsername());
                 }
