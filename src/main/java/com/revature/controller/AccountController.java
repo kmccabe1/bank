@@ -32,34 +32,51 @@ public class AccountController {
                     // Register a new bank account
                     Account account = registerNewAccount(user);
                     System.out.println("Your " + account.getType() + " account has been created");
-                    System.out.println("Available balance: " + account.getBalance());
+                    System.out.println("Available balance: " + Account.df.format(account.getBalance()));
                 }
                 case "2" -> {
                     // Withdraw from a bank account
                     System.out.print("Please enter your account ID: ");
                     int accountId = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Please enter the amount you would like to withdraw: ");
-                    double amount = Double.parseDouble(scanner.nextLine());
-                    double balance = withdraw(accountDao.getAccount(accountId, user), accountId, amount);
-                    System.out.println("Available balance: " + balance);
+                    if (validateOwner(accountId, user.getUsername())) {
+                        // User owns account
+                        System.out.print("Please enter the amount you would like to withdraw: ");
+                        double amount = Double.parseDouble(scanner.nextLine());
+                        double balance = withdraw(accountDao.getAccount(accountId, user), accountId, amount);
+                        // Format output to 2 decimal places
+                        System.out.println("Available balance: " + Account.df.format(balance));
+                    } else {
+                        System.out.println("You are not the owner of this account");
+                    }
                 }
                 case "3" -> {
                     // Deposit to a bank account
                     System.out.print("Please enter your account ID: ");
                     int accountId = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Please enter the amount you would like to deposit: ");
-                    double amount = Double.parseDouble(scanner.nextLine());
-                    double balance = deposit(accountDao.getAccount(accountId, user),accountId, amount);
-                    System.out.println("Available balance: " + balance);
+                    if (validateOwner(accountId, user.getUsername())) {
+                        // User owns account
+                        System.out.print("Please enter the amount you would like to deposit: ");
+                        double amount = Double.parseDouble(scanner.nextLine());
+                        double balance = deposit(accountDao.getAccount(accountId, user), accountId, amount);
+                        // Format output to 2 decimal places
+                        System.out.println("Available balance: " + Account.df.format(balance));
+                    } else {
+                        System.out.println("You are not the owner of this account");
+                    }
                 }
                 case "4" -> {
                     // View bank account details
                     System.out.print("Please enter your account ID: ");
                     int accountId = Integer.parseInt(scanner.nextLine());
-                    Account bankAccount = accountDao.getAccount(accountId, user);
-                    System.out.println("Owner: " + bankAccount.getOwner().getUsername());
-                    System.out.println("Account Type: " + bankAccount.getType());
-                    System.out.println("Available Balance: " + bankAccount.getBalance());
+                    if (validateOwner(accountId, user.getUsername())) {
+                        // Only show account details if user owns account
+                        Account bankAccount = accountDao.getAccount(accountId, user);
+                        System.out.println("Owner: " + bankAccount.getOwner().getUsername());
+                        System.out.println("Account Type: " + bankAccount.getType());
+                        System.out.println("Available Balance: " + Account.df.format(bankAccount.getBalance()));
+                    } else {
+                        System.out.println("You are not the owner of this account");
+                    }
                 }
                 case "5" -> {
                     // Close bank account

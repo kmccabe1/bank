@@ -2,6 +2,7 @@ package com.revature.service;
 
 import com.revature.entity.User;
 import com.revature.exception.LoginFail;
+import com.revature.exception.UserValidationFail;
 import com.revature.repository.UserDao;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class UserService {
                 return userDao.createUser(user);
             }
         }
-        throw new RuntimeException("placeholder for custom exception");
+        throw new UserValidationFail("Failed to validate user");
     }
 
     private boolean checkLength(User user) {

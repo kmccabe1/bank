@@ -6,7 +6,7 @@ public class Account {
     private final String type;
     private double balance;
     private final User owner;
-    private static final DecimalFormat df = new DecimalFormat("#0.00");
+    public static final DecimalFormat df = new DecimalFormat("#0.00");
 
     public Account(String type, double balance, User owner) {
         this.type = type;
@@ -29,7 +29,7 @@ public class Account {
     public double deposit(double amount) {
         // Deposit amount to account and format to 2 decimal places
         balance = balance + amount;
-        return Double.parseDouble(df.format(balance));
+        return balance;
     }
 
     public double withdraw(double amount) {
@@ -37,6 +37,6 @@ public class Account {
         if (balance - amount >= 0) {
             balance = balance - amount;
         }
-        return Double.parseDouble(df.format(balance));
+        return balance;
     }
 }
