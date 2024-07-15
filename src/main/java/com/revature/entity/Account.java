@@ -3,6 +3,7 @@ package com.revature.entity;
 import java.text.DecimalFormat;
 
 public class Account {
+    private int id;
     private final String type;
     private double balance;
     private final User owner;
@@ -12,6 +13,14 @@ public class Account {
         this.type = type;
         this.balance = balance;
         this.owner = owner;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getType() {
@@ -34,7 +43,7 @@ public class Account {
 
     public double withdraw(double amount) {
         // Withdraw amount from account if balance will not fall below $0
-        if (balance - amount >= 0) {
+        if (Math.round(balance * 100) / 100D - Math.round(amount * 100) / 100D >= 0) {
             balance = balance - amount;
         }
         return balance;

@@ -27,6 +27,8 @@ public class SqliteAccountDao implements AccountDao {
             preparedStatement.setString(3, resultSet.getString("userId"));
             int result = preparedStatement.executeUpdate();
             if (result == 1) {
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                account.setId(generatedKeys.getInt(1));
                 return account;
             }
             throw new AccountSQLException("Account could not be created: please try again");

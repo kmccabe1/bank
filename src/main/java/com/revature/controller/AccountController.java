@@ -32,7 +32,13 @@ public class AccountController {
                     // Register a new bank account
                     Account account = registerNewAccount(user);
                     System.out.println("Your " + account.getType() + " account has been created");
-                    System.out.println("Available balance: " + Account.df.format(account.getBalance()));
+                    System.out.println("Account ID: " + account.getId());
+                    String balance = Account.df.format(account.getBalance());
+                    if (balance.equals("-0.00")) {
+                        System.out.println("Available balance: 0.00");
+                    } else {
+                        System.out.println("Available balance: " + Account.df.format(account.getBalance()));
+                    }
                 }
                 case "2" -> {
                     // Withdraw from a bank account
@@ -44,7 +50,13 @@ public class AccountController {
                         double amount = Double.parseDouble(scanner.nextLine());
                         double balance = withdraw(accountDao.getAccount(accountId, user), accountId, amount);
                         // Format output to 2 decimal places
-                        System.out.println("Available balance: " + Account.df.format(balance));
+                        String str = Account.df.format(balance);
+                        if (str.equals("-0.00")) {
+                            // Handle negative zero rounding precision error
+                            System.out.println("Available balance: 0.00");
+                        } else {
+                            System.out.println("Available balance: " + str);
+                        }
                     } else {
                         System.out.println("You are not the owner of this account");
                     }
@@ -59,7 +71,13 @@ public class AccountController {
                         double amount = Double.parseDouble(scanner.nextLine());
                         double balance = deposit(accountDao.getAccount(accountId, user), accountId, amount);
                         // Format output to 2 decimal places
-                        System.out.println("Available balance: " + Account.df.format(balance));
+                        String str = Account.df.format(balance);
+                        if (str.equals("-0.00")) {
+                            // Handle negative zero rounding precision error
+                            System.out.println("Available balance: 0.00");
+                        } else {
+                            System.out.println("Available balance: " + str);
+                        }
                     } else {
                         System.out.println("You are not the owner of this account");
                     }
@@ -70,10 +88,15 @@ public class AccountController {
                     int accountId = Integer.parseInt(scanner.nextLine());
                     if (validateOwner(accountId, user.getUsername())) {
                         // Only show account details if user owns account
-                        Account bankAccount = accountDao.getAccount(accountId, user);
-                        System.out.println("Owner: " + bankAccount.getOwner().getUsername());
-                        System.out.println("Account Type: " + bankAccount.getType());
-                        System.out.println("Available Balance: " + Account.df.format(bankAccount.getBalance()));
+                        Account account = accountDao.getAccount(accountId, user);
+                        System.out.println("Owner: " + account.getOwner().getUsername());
+                        System.out.println("Account Type: " + account.getType());
+                        String balance = Account.df.format(account.getBalance());
+                        if (balance.equals("-0.00")) {
+                            System.out.println("Available balance: 0.00");
+                        } else {
+                            System.out.println("Available balance: " + Account.df.format(account.getBalance()));
+                        }
                     } else {
                         System.out.println("You are not the owner of this account");
                     }

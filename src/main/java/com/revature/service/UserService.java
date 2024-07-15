@@ -18,9 +18,11 @@ public class UserService {
         if (checkLength(user)) {
             if (checkUnique(user)) {
                 return userDao.createUser(user);
+            } else {
+                throw new UserValidationFail("Username must be unique");
             }
         }
-        throw new UserValidationFail("Failed to validate user");
+        throw new UserValidationFail("Username and password must not be longer than 30 characters");
     }
 
     private boolean checkLength(User user) {

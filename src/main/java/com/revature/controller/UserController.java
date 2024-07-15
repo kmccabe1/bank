@@ -29,8 +29,7 @@ public class UserController {
                     try {
                         registerNewUser();
                     } catch (UserValidationFail e) {
-                        System.out.println("Invalid username or password provided");
-                        System.out.println("Username and password must not be longer than 30 characters");
+                        System.out.println(e.getMessage());
                     }
                 }
                 case "2" -> {
